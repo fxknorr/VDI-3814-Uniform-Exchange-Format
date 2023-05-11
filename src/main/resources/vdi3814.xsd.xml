@@ -1,0 +1,217 @@
+<vdi3814
+    xmlns="http://auto.tuwien.ac.at/vdi3814"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://auto.tuwien.ac.at/vdi3814 vdi3814.xsd"
+>
+  <IdentificationLabel id="lblProperty" name="Property" length="1"/>
+  <IdentificationLabel id="lblBuildingDesignation" name="Building designation" length="2"/>
+  <IdentificationLabel id="lblInformationFocalPoint" name="Information focal point" length="2"/>
+  <IdentificationLabel id="lblWorksIdentifier" name="Works identifier" length="1"/>
+  <IdentificationLabel id="lblSystemType" name="System type" length="2"/>
+  <IdentificationLabel id="lblSystemNumber" name="System number" length="2"/>
+  <IdentificationLabel id="lblFloorLevel" name="Floor/Level" length="2"/>
+  <IdentificationLabel id="lblComponentDesignation" name="Component designation" length="2"/>
+  <IdentificationLabel id="lblRoomNumber" name="Room number" length="2"/>
+  <IdentificationLabel id="lblEquipment" name="Equipment" length="3"/>
+  <IdentificationLabel id="lblEquipmentNumber" name="Equipment number" length="2"/>
+  <IdentificationLabel id="lblFunctionIdentifier" name="Function identifier" length="3"/>
+  <IdentificationLabel id="lblFunctionNumber" name="Function number" length="2"/>
+  <IdentificationLabel id="lblOptionExplaination" name="Option, explaination" length="2"/>
+
+  <IdentificationSection id="secBuildingSection" name="Building section">
+    <IdentificationLabels>
+      <IdentificationLabelRef id="refLblProperty" ref="lblProperty"/>
+      <Delimiter>-</Delimiter>
+      <IdentificationLabelRef id="refLblBuildingDesignation" ref="lblBuildingDesignation"/>
+      <Delimiter>-</Delimiter>
+    </IdentificationLabels>
+  </IdentificationSection>
+
+  <IdentificationSection id="secIspSection" name="ISP section">
+    <IdentificationLabels>
+      <IdentificationLabelRef id="refLblInformationFocalPoint" ref="lblInformationFocalPoint"/>
+      <Delimiter>-</Delimiter>
+    </IdentificationLabels>
+  </IdentificationSection>
+
+  <IdentificationSection id="secPlantComponent" name="Plant component">
+    <IdentificationLabels>
+      <IdentificationLabelRef id="refLblWorksIdentifier" ref="lblWorksIdentifier"/>
+      <Delimiter>-</Delimiter>
+      <IdentificationLabelRef id="refLblSystemType" ref="lblSystemType"/>
+      <IdentificationLabelRef id="refLblSystemNumber" ref="lblSystemNumber"/>
+      <Delimiter>-</Delimiter>
+    </IdentificationLabels>
+  </IdentificationSection>
+
+  <IdentificationSection id="secGeographicalReference" name="Geographical reference">
+    <IdentificationLabels>
+      <IdentificationLabelRef id="refLblFloorLevel" ref="lblFloorLevel"/>
+      <Delimiter>-</Delimiter>
+      <IdentificationLabelRef id="refLblComponentDesignation" ref="lblComponentDesignation"/>
+      <Delimiter>-</Delimiter>
+      <IdentificationLabelRef id="refLblRoomNumber" ref="lblRoomNumber"/>
+      <Delimiter>-</Delimiter>
+    </IdentificationLabels>
+  </IdentificationSection>
+
+  <IdentificationSection id="secEquipment" name="Equipment">
+    <IdentificationLabels>
+      <IdentificationLabelRef id="refLblEquipment" ref="lblEquipment"/>
+      <IdentificationLabelRef id="refLblEquipmentNumber" ref="lblEquipmentNumber"/>
+      <Delimiter>-</Delimiter>
+    </IdentificationLabels>
+  </IdentificationSection>
+
+  <IdentificationSection id="secFunction" name="Function">
+    <IdentificationLabels>
+      <IdentificationLabelRef id="refLblFunctionIdentifier" ref="lblFunctionIdentifier"/>
+      <IdentificationLabelRef id="refLblFunctionNumber" ref="lblFunctionNumber"/>
+      <Delimiter>-</Delimiter>
+      <IdentificationLabelRef id="refLblOptionExplaination" ref="lblOptionExplaination"/>
+      <Delimiter>-</Delimiter>
+    </IdentificationLabels>
+  </IdentificationSection>
+
+  <System id="sys1" name="System" SDS="sys1">
+    <IdentificationSections>
+      <IdentificationSectionRef id="refSys1SecBuildingSection" ref="secBuildingSection"/>
+      <IdentificationSectionRef id="refSys1SecIspSection" ref="secIspSection"/>
+      <IdentificationSectionRef id="refSys1SecPlantComponent" ref="secPlantComponent"/>
+    </IdentificationSections>
+    <Properties>
+
+    </Properties>
+  </System>
+
+  <Equipment id="eq1" system="sys1" name="Equipment 1" EDS="eq1">
+    <IdentificationSections>
+      <IdentificationSectionRef id="refEq1SecBuildingSection" ref="secBuildingSection"/>
+      <IdentificationSectionRef id="refEq1SecIspSection" ref="secIspSection"/>
+      <IdentificationSectionRef id="refEq1SecPlantComponent" ref="secPlantComponent"/>
+      <IdentificationSectionRef id="refEq1SecGeographicalReference" ref="secGeographicalReference"/>
+      <IdentificationSectionRef id="refEq1SecEquipment" ref="secEquipment"/>
+    </IdentificationSections>
+    <Properties>
+
+    </Properties>
+  </Equipment>
+
+  <Equipment id="eq2" system="sys1" name="Equipment 2" EDS="eq2">
+    <IdentificationSections>
+      <IdentificationSectionRef id="refEq2SecBuildingSection" ref="secBuildingSection"/>
+      <IdentificationSectionRef id="refEq2SecIspSection" ref="secIspSection"/>
+      <IdentificationSectionRef id="refEq2SecPlantComponent" ref="secPlantComponent"/>
+      <IdentificationSectionRef id="refEq2SecGeographicalReference" ref="secGeographicalReference"/>
+      <IdentificationSectionRef id="refEq2SecEquipment" ref="secEquipment"/>
+    </IdentificationSections>
+    <Properties>
+
+    </Properties>
+  </Equipment>
+
+  <Datapoint id="dp1" name="Datapoint 1" equipment="eq1" UAS="dp1">
+    <IdentificationSections>
+      <IdentificationSectionRef id="refDp1SecBuildingSection" ref="secBuildingSection"/>
+      <IdentificationSectionRef id="refDp1SecIspSection" ref="secIspSection"/>
+      <IdentificationSectionRef id="refDp1SecPlantComponent" ref="secPlantComponent"/>
+      <IdentificationSectionRef id="refDp1SecGeographicalReference" ref="secGeographicalReference"/>
+      <IdentificationSectionRef id="refDp1SecEquipment" ref="secEquipment"/>
+      <IdentificationSectionRef id="refDp1SecFunction" ref="secFunction"/>
+    </IdentificationSections>
+    <Properties>
+      <!--<PropertyRef id="refPropDp1" ref="propDp4"/>-->
+    </Properties>
+  </Datapoint>
+
+  <Datapoint id="dp2" name="Datapoint 2" equipment="eq1" UAS="dp2">
+    <IdentificationSections>
+      <IdentificationSectionRef id="refDp2SecBuildingSection" ref="secBuildingSection"/>
+      <IdentificationSectionRef id="refDp2SecIspSection" ref="secIspSection"/>
+      <IdentificationSectionRef id="refDp2SecPlantComponent" ref="secPlantComponent"/>
+      <IdentificationSectionRef id="refDp2SecGeographicalReference" ref="secGeographicalReference"/>
+      <IdentificationSectionRef id="refDp2SecEquipment" ref="secEquipment"/>
+      <IdentificationSectionRef id="refDp2SecFunction" ref="secFunction"/>
+    </IdentificationSections>
+    <Properties>
+      <PropertyRef id="refPropDp2" ref="propDp4"/>
+    </Properties>
+  </Datapoint>
+
+  <Datapoint id="dp3" name="Datapoint 3" equipment="eq2" UAS="dp3">
+    <IdentificationSections>
+      <IdentificationSectionRef id="refDp3SecBuildingSection" ref="secBuildingSection"/>
+      <IdentificationSectionRef id="refDp3SecIspSection" ref="secIspSection"/>
+      <IdentificationSectionRef id="refDp3SecPlantComponent" ref="secPlantComponent"/>
+      <IdentificationSectionRef id="refDp3SecGeographicalReference" ref="secGeographicalReference"/>
+      <IdentificationSectionRef id="refDp3SecEquipment" ref="secEquipment"/>
+      <IdentificationSectionRef id="refDp3SecFunction" ref="secFunction"/>
+    </IdentificationSections>
+    <Properties>
+      <PropertyRef id="refPropDp3" ref="propDp4"/>
+    </Properties>
+  </Datapoint>
+
+  <Datapoint id="dp4" name="Datapoint 4" equipment="eq2" UAS="dp4">
+    <IdentificationSections>
+      <IdentificationSectionRef id="refDp4SecBuildingSection" ref="secBuildingSection"/>
+      <IdentificationSectionRef id="refDp4SecIspSection" ref="secIspSection"/>
+      <IdentificationSectionRef id="refDp4SecPlantComponent" ref="secPlantComponent"/>
+      <IdentificationSectionRef id="refDp4SecGeographicalReference" ref="secGeographicalReference"/>
+      <IdentificationSectionRef id="refDp4SecEquipment" ref="secEquipment"/>
+      <IdentificationSectionRef id="refDp4SecFunction" ref="secFunction"/>
+    </IdentificationSections>
+    <Properties>
+      <PropertyRef id="refDp4PPropFloorLevel" ref="propSys1FloorLevel"/>
+      <PropertyRef id="refPropDp4" ref="propDp4"/>
+    </Properties>
+  </Datapoint>
+
+  <Property id="propSys1FloorLevel" name="Floor level" abrv="UG" identificationLabel="lblFloorLevel">
+    <value>Undergroud</value>
+  </Property>
+
+  <Property id="propDp4" name="DatapointStructure" abrv="DT">
+    <value>
+      <DatapointStructure>Analogues input</DatapointStructure>
+    </value>
+  </Property>
+
+  <!--<System id="sys1" name="sys1" description="string" delimiter="-" SDS="sys1">
+    <IdentificationSections>
+      <IdentificationSectionRef id="string" ref="string"/>
+    </IdentificationSections>
+    <Properties>
+      <PropertyRef id="string" ref="string"/>
+    </Properties>
+    <AnyElement/>
+  </System>
+  <Equipment id="string" name="string" description="string" delimiter="string" system="string" EDS="string">
+    <IdentificationSections>
+      <IdentificationSectionRef id="string" ref="string"/>
+    </IdentificationSections>
+    <Properties>
+      <PropertyRef id="string" ref="string"/>
+    </Properties>
+    <AnyElement/>
+  </Equipment>
+
+  <Datapoint id="string" name="string" description="string" delimiter="string" equipment="string" UAS="string">
+    <IdentificationSections>
+      <IdentificationSectionRef id="string" ref="string"/>
+    </IdentificationSections>
+    <Properties>
+      <PropertyRef id="string" ref="string"/>
+    </Properties>
+    <AnyElement/>
+  </Datapoint>
+
+
+
+  <Property id="string" name="string" description="string" abrv="string" identificationLabel="string">
+    <value>anyType</value>
+    <AnyElement/>
+  </Property>-->
+</vdi3814>

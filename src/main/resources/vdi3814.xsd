@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns="http://auto.tuwien.ac.at/vdi3814"
+  targetNamespace="http://auto.tuwien.ac.at/vdi3814"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:svg="http://www.w3.org/2000/svg"
+  vc:minVersion="1.1"
+  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+  elementFormDefault="qualified"
+>
+  <xs:import namespace="http://www.w3.org/2000/svg" schemaLocation="SVG.xsd"/>
+
+  <xs:simpleType name="DatapointStructureType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration id="AI" value="Analogues input"/>
+      <xs:enumeration id="BI" value="Binary input"/>
+      <xs:enumeration id="AO" value="Analogues output"/>
+      <xs:enumeration id="BO" value="Binary output"/>
+      <xs:enumeration id="AV" value="Analogues value"/>
+      <xs:enumeration id="BV" value="Binary value"/>
+      <xs:enumeration id="MV" value="Multistate value"/>
+      <xs:enumeration id="SCH" value="Scheduler"/>
+      <xs:enumeration id="CAL" value="Calendar"/>
+      <xs:enumeration id="NC" value="Notification class"/>
+      <xs:enumeration id="LOG" value="Data logging"/>
+      <xs:enumeration id="KO" value="Other complex objects"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TradeMarking">
+    <xs:restriction base="xs:string">
+      <xs:enumeration id="TM_330" value="Doors, gates, windows, sun protection"/>
+      <!-- Trade markings according to VDI3814 4.1 (2019) Page 18 -->
+      <xs:enumeration id="TM_540" value="Technical equipment in outdoor facilities"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="SystemDesignation">
+    <xs:restriction base="xs:string">
+      <xs:enumeration id="SD_FAS" value="Façade (over-arching, otherwise room reference)"/>
+      <!-- System designations according to VDI3814 4.1 (2019) Pages 19-24 -->
+      <xs:enumeration id="SD_ZTA" value="Cistern system"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="DeviceComponentNames">
+    <xs:restriction base="xs:string">
+      <xs:enumeration id="DCN_FEE" value="Functionally independent equipment"/>
+      <!-- Devices/Components according to VDI3814 4.1 (2019) Pages 33-35 -->
+      <xs:enumeration id="DCN_RBG" value="Room control unit"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Function">
+    <xs:restriction base="xs:string">
+      <xs:enumeration id="FUNC_AF_" value="Requirement"/>
+      <!-- Functions according to VDI3814 4.1 (2019) Pages 36-38 -->
+      <xs:enumeration id="FUNC_ZP_" value="Room control unit"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="DatapointStructure" type="DatapointStructureType"/>
+
+  <xs:complexType name="NamedElement">
+    <xs:attribute use="required" name="id" type="xs:string"/>
+    <xs:attribute use="required" name="name" type="xs:string"/>
+    <xs:attribute name="description" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="IdentificationPlateType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:sequence>
+          <xs:element name="IdentificationSections">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="IdentificationSectionRef" type="RefType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Properties">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyRef" type="RefType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:any minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="IdentificationSectionType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:sequence>
+          <xs:element name="IdentificationLabels">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="IdentificationLabelRef" type="RefType"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="Delimiter" type="xs:string"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:any minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="IdentificationLabelType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:sequence>
+          <xs:any minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute use="required" name="length" type="xs:integer"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="PropertyType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:sequence>
+          <xs:element name="value" type="xs:anyType"/>
+          <xs:any minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute use="required" name="abrv" type="xs:string"/>
+        <xs:attribute name="identificationLabel" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- todo: assert that there is a property for sds -->
+  <!-- id === sds -->
+  <xs:complexType name="SystemType">
+    <!--<xs:attribute name="id" type="xs:string"/> inherited from plate -->
+    <xs:complexContent>
+      <xs:extension base="IdentificationPlateType">
+        <xs:attribute use="required" name="SDS" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- todo: assert that there is a property for sds and a property for autoIdentifier -->
+  <!-- id == eds -->
+  <xs:complexType name="EquipmentType">
+    <!--<xs:attribute name="id" type="xs:string"/>-->
+    <xs:complexContent>
+      <xs:extension base="IdentificationPlateType">
+        <xs:attribute use="required" name="system" type="xs:string"/>
+        <xs:attribute use="required" name="EDS" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- todo: assert that there is a property for objectType -->
+  <!-- id === uas -->
+  <xs:complexType name="DatapointType">
+    <!--<xs:attribute name="id" type="xs:string"/>-->
+    <xs:complexContent>
+      <xs:extension base="IdentificationPlateType">
+        <xs:attribute use="required" name="equipment" type="xs:string"/>
+        <xs:attribute use="required" name="UAS" type="xs:string"/>
+
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- //Datapoint/Properties/PropertyRef/@ref -->
+  <!-- exists(//Property[@id eq 'propDp4' and @name eq 'DatapointStructure']) -->
+  <!-- some $x in //Datapoint[@id eq 'dp3']/Properties/PropertyRef satisfies exists(//Property[@id eq $x/@ref and @name eq 'DatapointStructure']) -->
+
+  <xs:complexType name="RefType">
+    <xs:attribute use="required" name="id" type="xs:string"/>
+    <xs:attribute use="required" name="ref" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:simpleType name="PaperSize">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A0"/>
+      <xs:enumeration value="A1"/>
+      <xs:enumeration value="A2"/>
+      <xs:enumeration value="A3"/>
+      <xs:enumeration value="A4"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="HistoryEntryType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:sequence>
+          <xs:element name="Authors">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Author" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:any/>
+        </xs:sequence>
+        <xs:attribute name="date" type="xs:date"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="DocumentType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="HistorySection">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="HistoryEntry" type="HistoryEntryType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="MetadataSection">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="ProjectDetails" type="xs:anyType"/>
+                <xs:element name="PlanCreator" type="xs:anyType"/>
+                <xs:any/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:any/>
+        </xs:sequence>
+        <xs:attribute name="paperSize" type="PaperSize"/>
+        <xs:attribute name="date" type="xs:date"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ListFieldType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:sequence>
+          <xs:any/>
+        </xs:sequence>
+        <xs:attribute name="category" type="xs:string"/>
+        <xs:attribute name="identificationLabel" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ListEntryType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ListEntryValue" type="ListEntryValueType"/>
+      <xs:any/>
+    </xs:sequence>
+    <xs:attribute name="identificationPlate" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="ListEntryValueType">
+    <xs:choice>
+      <xs:element name="PropertyRef" type="RefType"/>
+      <xs:element name="Value" type="xs:anyType"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="BacsListType">
+    <xs:complexContent>
+      <xs:extension base="DocumentType">
+        <xs:sequence>
+          <xs:element name="ListFieldSection">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="ListField" type="ListFieldType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="ListEntrySection">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="ListEntry" type="ListEntryType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- taken from https://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd -->
+  <xs:simpleType name="LengthType">
+    <xs:annotation>
+      <xs:documentation> nn for pixels or nn% for percentage length </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[-+]?(\d+|\d+(\.\d+)?%)"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:attributeGroup name="DrawableAttributeGroup">
+    <xs:attribute name="x" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="y" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="height" type="LengthType"/>
+    <xs:attribute name="width" type="LengthType"/>
+  </xs:attributeGroup>
+
+  <xs:complexType name="DatapointRefType">
+    <xs:complexContent>
+      <xs:extension base="RefType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyRef" type="RefType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="EquipmentRefType">
+    <xs:complexContent>
+      <xs:extension base="RefType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="DatapointRef" type="DatapointRefType"/>
+          <xs:element minOccurs="1" name="svg" type="svg:svgType"/>
+          <!-- todo: assert that svg contains text element with id automationIdentifier-->
+        </xs:sequence>
+        <xs:attributeGroup ref="DrawableAttributeGroup"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="FBFunctionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Analogue input" />
+      <xs:enumeration value="Binary input" />
+      <xs:enumeration value="Analogue output" />
+      <xs:enumeration value="Binary output" />
+      <xs:enumeration value="Virtual analogue value functions" />
+      <xs:enumeration value="Virtual binary value functions" />
+      <xs:enumeration value="Shared analogue value functions" />
+      <xs:enumeration value="Shared binary value functions" />
+      <xs:enumeration value="Schedule" />
+      <xs:enumeration value="Calendar" />
+      <xs:enumeration value="Alarm/event signalling" />
+      <xs:enumeration value="Data recording" />
+      <xs:enumeration value="Group command" />
+      <xs:enumeration value="Device status" />
+      <xs:enumeration value="Programme status" />
+      <xs:enumeration value="AND" />
+      <xs:enumeration value="OR" />
+      <xs:enumeration value="XOR" />
+      <xs:enumeration value="NOT" />
+      <xs:enumeration value="Impulse TP" />
+      <xs:enumeration value="ON delay time" />
+      <xs:enumeration value="OFF delay time" />
+      <xs:enumeration value="Mathematical calculation " />
+      <xs:enumeration value="Limit-value monitoring" />
+      <xs:enumeration value="Runtime monitoring" />
+      <xs:enumeration value="Event monitoring" />
+      <xs:enumeration value="Command execution monitoring" />
+      <xs:enumeration value="System/device status" />
+      <xs:enumeration value="Motor control" />
+      <xs:enumeration value="Blockage protection" />
+      <xs:enumeration value="Switch-over" />
+      <xs:enumeration value="Stage control" />
+      <xs:enumeration value="Frost protection control" />
+      <xs:enumeration value="Safety control" />
+      <xs:enumeration value="Priority control" />
+      <xs:enumeration value="P, PI and PID controls" />
+      <xs:enumeration value="Sliding/curve setpoint" />
+      <xs:enumeration value="Proportional output stage" />
+      <xs:enumeration value="Proportional output – 2-point control" />
+      <xs:enumeration value="Proportional output – 3-point control" />
+      <xs:enumeration value="Proportional output – 3-point control; impulse output" />
+      <xs:enumeration value="Proportional output pulse-width modulation" />
+      <xs:enumeration value="Setpoint/control variable limitation" />
+      <xs:enumeration value="Parameter switch-over	" />
+      <xs:enumeration value="Energy mode" />
+      <xs:enumeration value="Energy recovery" />
+      <xs:enumeration value="h,x setpoint control" />
+      <xs:enumeration value="Continously variable switching" />
+      <xs:enumeration value="Night-time cooling" />
+      <xs:enumeration value="Lighting control" />
+      <xs:enumeration value="Stairwell light control" />
+      <xs:enumeration value="Daylight-dependent control" />
+      <xs:enumeration value="Constant-light control" />
+      <xs:enumeration value="Actuate sunshade" />
+      <xs:enumeration value="Automatic solar/twilight control" />
+      <xs:enumeration value="Automatic thermal control" />
+      <xs:enumeration value="Weather protection" />
+      <xs:enumeration value="Solar altitude calculation" />
+      <xs:enumeration value="Graphics" />
+      <xs:enumeration value="Dynamic operation and display" />
+      <xs:enumeration value="Operating instructions" />
+      <xs:enumeration value="Message to external recipients" />
+      <xs:enumeration value="Other" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="FBIODataType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="time"/>
+      <xs:enumeration value="date"/>
+      <xs:enumeration value="real"/>
+      <xs:enumeration value="integer"/>
+      <xs:enumeration value="bool"/>
+      <xs:enumeration value="string"/>
+      <xs:enumeration value="struct"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="FBIOType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:attribute use="required" name="datatype" type="FBIODataType"/>
+        <xs:attribute name="unit" type="xs:string"/>
+        <xs:attribute name="state" type="xs:string"/>
+        <xs:attribute name="text" type="xs:string"/>
+        <xs:attribute name="operator" type="xs:string"/>
+        <xs:attribute name="display" type="xs:string"/>
+        <!--<xs:assertion test="(@unit and not(@state) and not(@text)) or (not(@unit) and @state and not(@text)) or (not(@unit) and not(@state) and @text) or (not(@unit) and not(@state) and not(@text))"/>
+        <xs:assertion test="(@operator and not(@display)) or (not(@operator) and @display) or (not(@operator) and not(@display))"/>-->
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="SrcType">
+    <xs:sequence>
+      <xs:any/>
+    </xs:sequence>
+    <xs:attribute name="lang" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="FBType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:sequence>
+          <xs:element name="Inputs">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Input" type="FBIOType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Outputs">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Output" type="FBIOType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="ParameterInputs">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="ParameterInput" type="FBIOType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="ParameterOutputs">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="ParameterOutput" type="FBIOType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Src" minOccurs="0" maxOccurs="unbounded" type="SrcType"/>
+          <xs:any/>
+        </xs:sequence>
+        <xs:attribute name="fbFunctionType" type="FBFunctionType"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="FBIORefType">
+    <xs:complexContent>
+      <xs:extension base="RefType">
+        <xs:sequence>
+          <xs:element name="Value" type="xs:anyType"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="FBRefType">
+    <xs:complexContent>
+      <xs:extension base="RefType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="InputRefs">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="InputRef" type="FBIORefType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="OutputRefs">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="OutputRef" type="FBIORefType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="ParameterInputRefs">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="ParameterInputRef" type="FBIORefType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="ParameterOutputRefs">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="ParameterOutputRef" type="FBIORefType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attributeGroup ref="DrawableAttributeGroup"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="GraphicalElementType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="svg" type="svg:svgType"/>
+          <xs:any/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="JumpGraphicalElementType">
+    <xs:complexContent>
+      <xs:extension base="GraphicalElementType">
+        <xs:attribute name="jumpTo" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="FBConnectionType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:attribute use="required" name="from" type="xs:string"/>
+        <xs:attribute use="required" name="to" type="xs:string"/>
+        <xs:attribute name="waypoints">
+          <xs:simpleType>
+            <xs:list itemType="xs:nonNegativeInteger"/>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="CharacteristicCurveType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:sequence>
+          <xs:element type="svg:svgType" name="svg"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="DrawableAttributeGroup"/>
+        <xs:attribute name="for" type="xs:string"/> <!-- if possible restrict to FBREF where fb.type is one of .... -->
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="AutomationSchemeType">
+    <xs:complexContent>
+      <xs:extension base="DocumentType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CharacteristicCurveSection">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="CharacteristicCurve" type="CharacteristicCurveType" minOccurs="0" maxOccurs="unbounded">
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="EquipmentSection">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="EquipmentRef" type="EquipmentRefType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="FBSection">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="FBRef" type="FBRefType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="ConnectionSection">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Connection" type="FBConnectionType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="GraphElementSection">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="GraphicalElement">
+                  <xs:complexType>
+                    <xs:complexContent>
+                      <xs:extension base="GraphicalElementType">
+                        <xs:attributeGroup ref="DrawableAttributeGroup"/>
+                      </xs:extension>
+                    </xs:complexContent>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="GraphicalElementRef">
+                  <xs:complexType>
+                    <xs:complexContent>
+                      <xs:extension base="RefType">
+                        <xs:attributeGroup ref="DrawableAttributeGroup"/>
+                      </xs:extension>
+                    </xs:complexContent>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:any/>
+        </xs:sequence>
+        <xs:attribute use="required" name="system" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="FBDiagramType">
+    <xs:complexContent>
+      <xs:extension base="DocumentType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Datapoints">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="DatapointRef" type="RefType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="FBs">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="FBRef" type="FBRefType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="Connections">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Connection" type="FBConnectionType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:any/>
+        </xs:sequence>
+        <xs:attribute use="required" name="system" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ActionType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="DatapointRef" type="RefType"/>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Src" type="SrcType"/>
+          <xs:any/>
+        </xs:sequence>
+        <xs:attribute use="required" name="for" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="TransitionType">
+    <xs:complexContent>
+      <xs:extension base="NamedElement">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="DatapointRef" type="RefType"/>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Src" type="SrcType"/>
+          <xs:any/>
+        </xs:sequence>
+        <xs:attribute use="required" name="from" type="xs:string"/>
+        <xs:attribute use="required" name="to" type="xs:string"/>
+        <xs:attribute name="waypoints">
+          <xs:simpleType>
+            <xs:list itemType="xs:nonNegativeInteger"/>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="StateDiagramType">
+    <xs:complexContent>
+      <xs:extension base="DocumentType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="States">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="State" type="NamedElement"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="Actions">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Action" type="ActionType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="Transitions">
+            <xs:complexType>
+              <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Transition" type="TransitionType"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:any/>
+        </xs:sequence>
+        <xs:attribute use="required" name="system" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="vdi3814">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="IdentificationPlate" type="IdentificationPlateType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="IdentificationSection" type="IdentificationSectionType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="IdentificationLabel" type="IdentificationLabelType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="System" type="SystemType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="Equipment" type="EquipmentType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="Datapoint" type="DatapointType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="Property" type="PropertyType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="BacsList" type="BacsListType"/>
+
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="BacsList" type="BacsListType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="BacsList" type="BacsListType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="BacsList" type="BacsListType"/>
+      </xs:sequence>
+      <xs:assert test="every $dp in Datapoint satisfies (some $x in $dp/Properties/PropertyRef satisfies exists(Property[@id eq $x/@ref and @name eq 'DatapointStructure']))"/>
+    </xs:complexType>
+
+    <xs:key name="IdentificationPlate">
+      <xs:selector xpath="IdentificationPlate"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="IdentificationSection">
+      <xs:selector xpath="IdentificationSection"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="IdentificationLabel">
+      <xs:selector xpath="IdentificationLabel"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="System">
+      <xs:selector xpath="System"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="Datapoint">
+      <xs:selector xpath="Datapoint"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="Equipment">
+      <xs:selector xpath="Equipment"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="Property">
+      <xs:selector xpath="Property"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+
+    <xs:keyref name="IdentificationPlateRef" refer="IdentificationPlate">
+        <xs:selector xpath="IdentificationPlateRef"/>
+        <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:keyref name="IdentificationSectionRef" refer="IdentificationSection">
+        <xs:selector xpath="IdentificationSectionRef"/>
+        <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:keyref name="IdentificationLabelRef" refer="IdentificationLabel">
+        <xs:selector xpath="IdentificationLabelRef"/>
+        <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:keyref name="PropertyRef" refer="Property">
+        <xs:selector xpath="PropertyRef"/>
+        <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:keyref name="SystemRef" refer="System">
+        <xs:selector xpath="SystemRef"/>
+        <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:keyref name="EquipmentRef" refer="Equipment">
+        <xs:selector xpath="EquipmentRef"/>
+        <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:keyref name="DatapointRef" refer="Datapoint">
+        <xs:selector xpath="DatapointRef"/>
+        <xs:field xpath="@ref"/>
+    </xs:keyref>
+
+    <xs:keyref name="EquipmentSystemRef" refer="System">
+        <xs:selector xpath="Equipment"/>
+        <xs:field xpath="@system"/>
+    </xs:keyref>
+    <xs:keyref name="DatapointEquipmentRef" refer="Equipment">
+        <xs:selector xpath="Datapoint"/>
+        <xs:field xpath="@equipment"/>
+    </xs:keyref>
+  </xs:element>
+</xs:schema>

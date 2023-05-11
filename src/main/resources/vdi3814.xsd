@@ -406,14 +406,14 @@
   <xs:complexType name="FBIOType">
     <xs:complexContent>
       <xs:extension base="NamedElement">
-        <xs:attribute use="required" name="datatype" type="FBIODataType"/>
+       <xs:attribute use="required" name="datatype" type="FBIODataType"/>
         <xs:attribute name="unit" type="xs:string"/>
         <xs:attribute name="state" type="xs:string"/>
         <xs:attribute name="text" type="xs:string"/>
         <xs:attribute name="operator" type="xs:string"/>
         <xs:attribute name="display" type="xs:string"/>
-        <!--<xs:assertion test="(@unit and not(@state) and not(@text)) or (not(@unit) and @state and not(@text)) or (not(@unit) and not(@state) and @text) or (not(@unit) and not(@state) and not(@text))"/>
-        <xs:assertion test="(@operator and not(@display)) or (not(@operator) and @display) or (not(@operator) and not(@display))"/>-->
+        <xs:assert test="(@unit and not(@state) and not(@text)) or (not(@unit) and @state and not(@text)) or (not(@unit) and not(@state) and @text) or (not(@unit) and not(@state) and not(@text))"/>
+        <xs:assert test="(@operator and not(@display)) or (not(@operator) and @display) or (not(@operator) and not(@display))"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -431,29 +431,29 @@
         <xs:sequence>
           <xs:element name="Inputs">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="Input" type="FBIOType"/>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="Input" type="FBIOType"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
           <xs:element name="Outputs">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="Output" type="FBIOType"/>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="Output" type="FBIOType"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
           <xs:element name="ParameterInputs">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="ParameterInput" type="FBIOType"/>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="ParameterInput" type="FBIOType"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
           <xs:element name="ParameterOutputs">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="ParameterOutput" type="FBIOType"/>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="ParameterOutput" type="FBIOType"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
@@ -481,8 +481,8 @@
         <xs:sequence>
           <xs:element minOccurs="0" name="InputRefs">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="InputRef" type="FBIORefType"/>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="InputRef" type="FBIORefType"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
@@ -495,15 +495,15 @@
           </xs:element>
           <xs:element name="ParameterInputRefs">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="ParameterInputRef" type="FBIORefType"/>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="ParameterInputRef" type="FBIORefType"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
           <xs:element name="ParameterOutputRefs">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="ParameterOutputRef" type="FBIORefType"/>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="ParameterOutputRef" type="FBIORefType"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
@@ -579,22 +579,22 @@
           </xs:element>
           <xs:element minOccurs="0" name="FBSection">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="FBRef" type="FBRefType"/>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="FBRef" type="FBRefType"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
           <xs:element minOccurs="0" name="ConnectionSection">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="Connection" type="FBConnectionType"/>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="Connection" type="FBConnectionType"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
           <xs:element minOccurs="0" name="GraphElementSection">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="GraphicalElement">
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="GraphicalElement">
                   <xs:complexType>
                     <xs:complexContent>
                       <xs:extension base="GraphicalElementType">
@@ -603,7 +603,7 @@
                     </xs:complexContent>
                   </xs:complexType>
                 </xs:element>
-                <xs:element name="GraphicalElementRef">
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="GraphicalElementRef">
                   <xs:complexType>
                     <xs:complexContent>
                       <xs:extension base="RefType">
@@ -635,15 +635,15 @@
           </xs:element>
           <xs:element minOccurs="0" name="FBs">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="FBRef" type="FBRefType"/>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="FBRef" type="FBRefType"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
           <xs:element minOccurs="0" name="Connections">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="Connection" type="FBConnectionType"/>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="Connection" type="FBConnectionType"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
@@ -699,15 +699,15 @@
           </xs:element>
           <xs:element minOccurs="0" name="Actions">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="Action" type="ActionType"/>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="Action" type="ActionType"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
           <xs:element minOccurs="0" name="Transitions">
             <xs:complexType>
-              <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="Transition" type="TransitionType"/>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="Transition" type="TransitionType"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
@@ -730,9 +730,10 @@
         <xs:element minOccurs="0" maxOccurs="unbounded" name="Property" type="PropertyType"/>
         <xs:element minOccurs="0" maxOccurs="unbounded" name="BacsList" type="BacsListType"/>
 
-        <xs:element minOccurs="0" maxOccurs="unbounded" name="BacsList" type="BacsListType"/>
-        <xs:element minOccurs="0" maxOccurs="unbounded" name="BacsList" type="BacsListType"/>
-        <xs:element minOccurs="0" maxOccurs="unbounded" name="BacsList" type="BacsListType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="AutomationScheme" type="AutomationSchemeType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="StateDiagram" type="StateDiagramType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="FBDiagram" type="FBDiagramType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="FB" type="FBType"/>
       </xs:sequence>
       <xs:assert test="every $dp in Datapoint satisfies (some $x in $dp/Properties/PropertyRef satisfies exists(Property[@id eq $x/@ref and @name eq 'DatapointStructure']))"/>
     </xs:complexType>
@@ -766,6 +767,13 @@
       <xs:field xpath="@id"/>
     </xs:key>
 
+    <xs:key name="FB">
+      <xs:selector xpath="FB"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+
+
+
     <xs:keyref name="IdentificationPlateRef" refer="IdentificationPlate">
         <xs:selector xpath="IdentificationPlateRef"/>
         <xs:field xpath="@ref"/>
@@ -794,7 +802,6 @@
         <xs:selector xpath="DatapointRef"/>
         <xs:field xpath="@ref"/>
     </xs:keyref>
-
     <xs:keyref name="EquipmentSystemRef" refer="System">
         <xs:selector xpath="Equipment"/>
         <xs:field xpath="@system"/>

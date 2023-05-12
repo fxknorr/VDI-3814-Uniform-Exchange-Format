@@ -771,7 +771,67 @@
       <xs:selector xpath="FB"/>
       <xs:field xpath="@id"/>
     </xs:key>
+    <xs:key name="BacsList">
+      <xs:selector xpath="BacsList"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="AutomationScheme">
+      <xs:selector xpath="AutomationScheme"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="StateDiagram">
+      <xs:selector xpath="StateDiagram"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="FBDiagram">
+      <xs:selector xpath="FBDiagram"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="DatapointRef">
+      <xs:selector xpath="DatapointRef"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="EquipmentRef">
+      <xs:selector xpath="EquipmentRef"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="FBRef">
+      <xs:selector xpath="FBRef"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="FBIORef">
+      <xs:selector xpath="FBIORef"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
 
+    <xs:key name="GraphicalElement">
+      <xs:selector xpath="GraphicalElement|JumpGraphicalElement"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="HistoryEntry">
+      <xs:selector xpath="HistoryEntry"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="ListField">
+      <xs:selector xpath="ListField"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="FBConnection">
+      <xs:selector xpath="FBConnection"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="Action">
+      <xs:selector xpath="Action"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="Transition">
+      <xs:selector xpath="Transition"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="FBIO">
+      <xs:selector xpath="FBIO"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
 
 
     <xs:keyref name="IdentificationPlateRef" refer="IdentificationPlate">
@@ -790,15 +850,15 @@
         <xs:selector xpath="PropertyRef"/>
         <xs:field xpath="@ref"/>
     </xs:keyref>
-    <xs:keyref name="SystemRef" refer="System">
+    <xs:keyref name="SystemRefRef" refer="System">
         <xs:selector xpath="SystemRef"/>
         <xs:field xpath="@ref"/>
     </xs:keyref>
-    <xs:keyref name="EquipmentRef" refer="Equipment">
+    <xs:keyref name="EquipmentRefRef" refer="Equipment">
         <xs:selector xpath="EquipmentRef"/>
         <xs:field xpath="@ref"/>
     </xs:keyref>
-    <xs:keyref name="DatapointRef" refer="Datapoint">
+    <xs:keyref name="DatapointRefRef" refer="Datapoint">
         <xs:selector xpath="DatapointRef"/>
         <xs:field xpath="@ref"/>
     </xs:keyref>

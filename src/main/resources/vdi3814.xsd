@@ -198,7 +198,7 @@
               </xs:sequence>
             </xs:complexType>
           </xs:element>
-          <xs:any/>
+          <xs:any minOccurs="0"/>
         </xs:sequence>
         <xs:attribute name="date" type="xs:date"/>
       </xs:extension>
@@ -221,14 +221,14 @@
               <xs:sequence>
                 <xs:element name="ProjectDetails" type="xs:anyType"/>
                 <xs:element name="PlanCreator" type="xs:anyType"/>
-                <xs:any/>
+                <xs:any minOccurs="0"/>
               </xs:sequence>
             </xs:complexType>
           </xs:element>
-          <xs:any/>
+          <xs:any minOccurs="0"/>
         </xs:sequence>
         <xs:attribute name="paperSize" type="PaperSize"/>
-        <xs:attribute name="date" type="xs:date"/>
+        <xs:attribute use="required" name="date" type="xs:date"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -237,7 +237,7 @@
     <xs:complexContent>
       <xs:extension base="NamedElement">
         <xs:sequence>
-          <xs:any/>
+          <xs:any minOccurs="0"/>
         </xs:sequence>
         <xs:attribute name="category" type="xs:string"/>
         <xs:attribute name="identificationLabel" type="xs:string"/>
@@ -248,7 +248,7 @@
   <xs:complexType name="ListEntryType">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="ListEntryValue" type="ListEntryValueType"/>
-      <xs:any/>
+      <xs:any minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="identificationPlate" type="xs:string"/>
   </xs:complexType>
@@ -458,7 +458,7 @@
             </xs:complexType>
           </xs:element>
           <xs:element name="Src" minOccurs="0" maxOccurs="unbounded" type="SrcType"/>
-          <xs:any/>
+          <xs:any minOccurs="0"/>
         </xs:sequence>
         <xs:attribute name="fbFunctionType" type="FBFunctionType"/>
       </xs:extension>
@@ -518,7 +518,7 @@
       <xs:extension base="NamedElement">
         <xs:sequence>
           <xs:element minOccurs="1" name="svg" type="svg:svgType"/>
-          <xs:any/>
+          <xs:any minOccurs="0"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -615,7 +615,6 @@
               </xs:sequence>
             </xs:complexType>
           </xs:element>
-          <xs:any/>
         </xs:sequence>
         <xs:attribute use="required" name="system" type="xs:string"/>
       </xs:extension>
@@ -647,7 +646,6 @@
               </xs:sequence>
             </xs:complexType>
           </xs:element>
-          <xs:any/>
         </xs:sequence>
         <xs:attribute use="required" name="system" type="xs:string"/>
       </xs:extension>
@@ -660,7 +658,7 @@
         <xs:sequence>
           <xs:element minOccurs="0" maxOccurs="unbounded" name="DatapointRef" type="RefType"/>
           <xs:element minOccurs="0" maxOccurs="unbounded" name="Src" type="SrcType"/>
-          <xs:any/>
+          <xs:any minOccurs="0"/>
         </xs:sequence>
         <xs:attribute use="required" name="for" type="xs:string"/>
       </xs:extension>
@@ -673,7 +671,7 @@
         <xs:sequence>
           <xs:element minOccurs="0" maxOccurs="unbounded" name="DatapointRef" type="RefType"/>
           <xs:element minOccurs="0" maxOccurs="unbounded" name="Src" type="SrcType"/>
-          <xs:any/>
+          <xs:any minOccurs="0"/>
         </xs:sequence>
         <xs:attribute use="required" name="from" type="xs:string"/>
         <xs:attribute use="required" name="to" type="xs:string"/>
@@ -711,7 +709,6 @@
               </xs:sequence>
             </xs:complexType>
           </xs:element>
-          <xs:any/>
         </xs:sequence>
         <xs:attribute use="required" name="system" type="xs:string"/>
       </xs:extension>
@@ -739,7 +736,7 @@
     </xs:complexType>
 
     <xs:key name="IdentificationPlate">
-      <xs:selector xpath="IdentificationPlate"/>
+      <xs:selector xpath="IdentificationPlate|System|Datapoint|Equipment"/>
       <xs:field xpath="@id"/>
     </xs:key>
     <xs:key name="IdentificationSection">
@@ -766,7 +763,6 @@
       <xs:selector xpath="Property"/>
       <xs:field xpath="@id"/>
     </xs:key>
-
     <xs:key name="FB">
       <xs:selector xpath="FB"/>
       <xs:field xpath="@id"/>
@@ -803,7 +799,14 @@
       <xs:selector xpath="FBIORef"/>
       <xs:field xpath="@id"/>
     </xs:key>
-
+    <xs:key name="DatapointRefOrFBIORef">
+      <xs:selector xpath="FBIORef|DatapointRef"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+    <xs:key name="State">
+      <xs:selector xpath="State"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
     <xs:key name="GraphicalElement">
       <xs:selector xpath="GraphicalElement|JumpGraphicalElement"/>
       <xs:field xpath="@id"/>
@@ -832,8 +835,6 @@
       <xs:selector xpath="FBIO"/>
       <xs:field xpath="@id"/>
     </xs:key>
-
-
     <xs:keyref name="IdentificationPlateRef" refer="IdentificationPlate">
         <xs:selector xpath="IdentificationPlateRef"/>
         <xs:field xpath="@ref"/>
@@ -862,6 +863,18 @@
         <xs:selector xpath="DatapointRef"/>
         <xs:field xpath="@ref"/>
     </xs:keyref>
+    <xs:keyref name="FBRefRef" refer="FB">
+      <xs:selector xpath="FBRef"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:keyref name="FBIORefRef" refer="FBIO">
+      <xs:selector xpath="FBIORef"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:keyref name="GraphicalElementRefRef" refer="GraphicalElement">
+      <xs:selector xpath="GraphicalElementRef"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
     <xs:keyref name="EquipmentSystemRef" refer="System">
         <xs:selector xpath="Equipment"/>
         <xs:field xpath="@system"/>
@@ -869,6 +882,59 @@
     <xs:keyref name="DatapointEquipmentRef" refer="Equipment">
         <xs:selector xpath="Datapoint"/>
         <xs:field xpath="@equipment"/>
+    </xs:keyref>
+
+    <xs:keyref name="ListEntryIdentificationPlateRef" refer="IdentificationPlate">
+      <xs:selector xpath="ListEntry"/>
+      <xs:field xpath="@identificationPlate"/>
+    </xs:keyref>
+    <xs:keyref name="ListFieldIdentificationLabelRef" refer="IdentificationLabel">
+      <xs:selector xpath="ListField"/>
+      <xs:field xpath="@identificationLabel"/>
+    </xs:keyref>
+    <xs:keyref name="AutomationSchemeSystemRef" refer="System">
+      <xs:selector xpath="AutomationScheme"/>
+      <xs:field xpath="@system"/>
+    </xs:keyref>
+    <xs:keyref name="StateDiagramSystemRef" refer="System">
+      <xs:selector xpath="StateDiagram"/>
+      <xs:field xpath="@system"/>
+    </xs:keyref>
+    <xs:keyref name="FBDiagramSystemRef" refer="System">
+      <xs:selector xpath="FBDiagram"/>
+      <xs:field xpath="@system"/>
+    </xs:keyref>
+    <xs:keyref name="CharacteristicCurveFBRefRef" refer="FBRef">
+      <xs:selector xpath="CharacteristicCurve"/>
+      <xs:field xpath="@for"/>
+    </xs:keyref>
+    <xs:keyref name="JumpGraphicalElementIdentificationPlateRef" refer="IdentificationPlate">
+      <xs:selector xpath="JumpGraphicalElement"/>
+      <xs:field xpath="@jumpTo"/>
+    </xs:keyref>
+    <xs:keyref name="TransitionFromStateRef" refer="State">
+      <xs:selector xpath="Transition"/>
+      <xs:field xpath="@from"/>
+    </xs:keyref>
+    <xs:keyref name="TransitionToStateRef" refer="State">
+      <xs:selector xpath="Transition"/>
+      <xs:field xpath="@to"/>
+    </xs:keyref>
+    <xs:keyref name="FBConnectionFromDatapointRefOrFBIORefRef" refer="DatapointRefOrFBIORef">
+      <xs:selector xpath="FBConnection"/>
+      <xs:field xpath="@from"/>
+    </xs:keyref>
+    <xs:keyref name="FBConnectionToDatapointRefOrFBIORefRef" refer="DatapointRefOrFBIORef">
+      <xs:selector xpath="FBConnection"/>
+      <xs:field xpath="@to"/>
+    </xs:keyref>
+    <xs:keyref name="ActionStateRef" refer="State">
+      <xs:selector xpath="Action"/>
+      <xs:field xpath="@for"/>
+    </xs:keyref>
+    <xs:keyref name="PropertyIdentificationLabelRef" refer="IdentificationLabel">
+      <xs:selector xpath="Property"/>
+      <xs:field xpath="@identificationLabel"/>
     </xs:keyref>
   </xs:element>
 </xs:schema>

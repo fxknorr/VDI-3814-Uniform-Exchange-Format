@@ -82,7 +82,6 @@
       <IdentificationSectionRef id="refSys1SecPlantComponent" ref="secPlantComponent"/>
     </IdentificationSections>
     <Properties>
-
     </Properties>
   </System>
 
@@ -178,6 +177,30 @@
       <DatapointStructure>Analogues input</DatapointStructure>
     </value>
   </Property>
+
+  <BacsList id="bacsList1" name="BACS List" date="2023-05-01" paperSize="A4">
+    <HistorySection>
+      <HistoryEntry id="bacs1histEntry" name="Creation">
+        <Authors>
+          <Author>Felix K.</Author>
+        </Authors>
+      </HistoryEntry>
+    </HistorySection>
+    <ListFieldSection>
+      <ListField id="bacsList1DataField" name="DataField" category="A"/>
+      <ListField id="bacsList1FloorField" name="Floor" identificationLabel="lblFloorLevel"/>
+    </ListFieldSection>
+    <ListEntrySection>
+      <ListEntry identificationPlate="dp4">
+        <ListEntryValue>
+          <Value>Some data</Value>
+        </ListEntryValue>
+        <ListEntryValue>
+          <PropertyRef id="bacsList1FloorFieldDp1" ref="propDp4"/>
+        </ListEntryValue>
+      </ListEntry>
+    </ListEntrySection>
+  </BacsList>
 
   <!--<System id="sys1" name="sys1" description="string" delimiter="-" SDS="sys1">
     <IdentificationSections>
